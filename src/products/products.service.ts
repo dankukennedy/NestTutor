@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { CreateProductDto } from './dto/create-products.dto';
+import { UpdateProductDto } from './dto/update-products-dto';
 
 @Injectable()
 export class ProductsService {
@@ -22,21 +24,21 @@ export class ProductsService {
         return product;
     }
 
-    create(products: { name: string, brand: string, price: number,state: 'outOfStock' | 'inStock' | 'Shortage'  }) {
+    create(createProductDto: CreateProductDto) {
         const productByHighestId = [...this.products].sort((a, b) => b.id - a.id);
         const newProduct = {
             id: productByHighestId[0].id + 1,
-            ...products
+            ...createProductDto         
         };
         this.products.push(newProduct);
         return newProduct;
     }
 
 
-    update(id: number, productsUpdate: { name?: string, brand?: string, price?: number, state?: 'outOfStock' | 'inStock' | 'Shortage' }) {
+    update(id: number, updateProductDto: UpdateProductDto) {
         this.products = this.products.map(product => {
             if (product.id === id) {
-                return { ...product, ...productsUpdate };
+                return { ...product, ...updateProductDto  };
             }
             return product;
         }); 
