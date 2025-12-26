@@ -14,13 +14,20 @@ export class ProductsService {
 
     findAll(state?: 'outOfStock' | 'inStock' | 'Shortage') {
         if(state) {
-            return this.products.filter(product => product.state === state);
+           const stateArray = this.products.filter(product => product.state === state);
+           if(stateArray.length === 0){
+               throw new Error(`No products found with state ${state}`);
+           }     
+              return stateArray;
         }
         return this.products;
     }
 
     findOne(id: number) {
         const  product = this.products.find(product => product.id === id);
+        if(!product){
+            throw new Error(`Product with ID ${id} not found`);
+        }
         return product;
     }
 
